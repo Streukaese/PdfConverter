@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfConverter", "PdfConverter\PdfConverter.csproj", "{60030630-2FE7-4B13-9048-8C252ABC3742}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60030630-2FE7-4B13-9048-8C252ABC3742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60030630-2FE7-4B13-9048-8C252ABC3742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60030630-2FE7-4B13-9048-8C252ABC3742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60030630-2FE7-4B13-9048-8C252ABC3742}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {34689D59-2742-410F-8154-1826FDE5A81E}
+	EndGlobalSection
+EndGlobal
