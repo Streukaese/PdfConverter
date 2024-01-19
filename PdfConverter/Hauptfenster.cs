@@ -66,7 +66,26 @@ namespace PdfConverter
 
         void MergePdf()
         {
+            string name = textBoxMergedName.Text;
+            if (name.Length == 0)
+            {
+                textBoxMergedName.Focus();
+                return;
+            }
 
+            PdfFileEditor pdfFileEditor = new PdfFileEditor();
+
+            // Hole die Liste der Dateipfade aus der DataGridView
+            List<string> pdfDateien = GetPdfDateienFromDataGridView();
+
+            if (pdfDateien.Count > 0)
+            {
+                // Konvertiere die Liste der Dateipfade in ein Array
+                string[] filesArray = pdfDateien.ToArray();
+
+                // Führe die PDF-Dateien zusammen
+                pdfFileEditor.Concatenate(filesArray, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), name + ".pdf"));
+            }
         }
 
         void OpenJpg()
@@ -74,6 +93,7 @@ namespace PdfConverter
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Joint Photographic Experts Group (*.jpg)|*.jpg|"
                 + "ABC (*.pdf)|*.pdf";
+                // TODO - png Anzeigen + Konvertieren in PDF
                 //+ "W3C Portable Network Graphics (*.png)|*.png";
             ofd.Multiselect = true;
             if (ofd.ShowDialog(this) != DialogResult.OK)
@@ -82,16 +102,15 @@ namespace PdfConverter
             }
             foreach (String filename in ofd.FileNames)
             {
-                FileInfo fileInfo = new FileInfo(filename);                 // Zum aufrufen der Parameter für die DGV
+                // Zum aufrufen der Parameter für die DGV
+                FileInfo fileInfo = new FileInfo(filename);
 
-                PdfPictureBox pictureBoxJpgBild = new PdfPictureBox();      // Statt PictureBox -> PdfPictureBox || Klasse "PdfPictureBox" wurde erweitert
+                // Statt PictureBox -> PdfPictureBox || Klasse "PdfPictureBox" wurde erweitert
+                PdfPictureBox pictureBoxJpgBild = new PdfPictureBox();
 
                 // Bild öffnen
                 FileStream imageStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
 
-                // Image der Picturebox setzen - IMAGE NICHT PDF
-                // TODO - Wie Pdf anzeigen - PdfPictureBox???? 
-                // ggf. : GhostScript.Net - http://habjan.blogspot.com/2013/09/how-to-use-ghostscriptnet-library-to.html
                 pictureBoxJpgBild.Image = System.Drawing.Image.FromStream(imageStream);
                 pictureBoxJpgBild.Location = new System.Drawing.Point(6 + pictureBoxes.Count * (182 + 6), 21);
                 pictureBoxJpgBild.Name = "pictureBoxPdfBild" + pictureBoxes.Count;
@@ -108,7 +127,6 @@ namespace PdfConverter
                 string dateipfad = openFileDialogPdfZsm.FileName;
                 string PdfNr = "Nr." + 1;
                 string seitenNr = "Seite " + seitenAnzahlDgv;
-                // TODO Name Formatieren/Gekürzt anzeigen (jpg/pdf -> Hervorgehoben)
                 string name = fileInfo.Name;
                 // TODO Kybi to Kb to MB - Anzeigen der Kürzel "kb" / "mb" - 
                 double speicher = fileInfo.Length;
@@ -118,12 +136,12 @@ namespace PdfConverter
             }
         }
 
+        // Seiten/Pdf Nr FÜR DGV
         int seitenAnzahlDgv = 1;
         int selectedPdfCount = 0;
         void OpenPdf()
         {
             // TODO - AUFRÄUMEN!!!
-            // TODO - Code auslagern -> ggf. nach Button Auswählen oder eigene Methoden (void PdfOeffnen || void JpgOeffnen)
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Adobe Portable Document Format (*.pdf)|*.pdf|"
                 + "Joint Photographic Experts Group(*.jpg)| *.jpg";
@@ -211,7 +229,7 @@ namespace PdfConverter
                 return;
             }
             
-            // Aktualisierung der DGV sowie JPG u. PDF bewärkstelligen
+            // TODO - Aktualisierung der DGV sowie JPG u. PDF bewärkstelligen
             dataGridViewImages.Rows.RemoveAt(index);
             groupBoxJpgBilder.Refresh();
             //pictureBoxes.Remove(index);
@@ -219,26 +237,9 @@ namespace PdfConverter
 
         private void buttonPdfZusammenfuegen_Click(object sender, EventArgs e)
         {
-            string name = textBoxMergedName.Text;
-            if(name.Length == 0)
-            {
-                textBoxMergedName.Focus();
-                return;
-            }
+            // TODO - Aufräumen
 
-            PdfFileEditor pdfFileEditor = new PdfFileEditor();
-
-            // Hole die Liste der Dateipfade aus der DataGridView
-            List<string> pdfDateien = GetPdfDateienFromDataGridView();
-
-            if (pdfDateien.Count > 0)
-            {
-                // Konvertiere die Liste der Dateipfade in ein Array
-                string[] filesArray = pdfDateien.ToArray();
-
-                // Führe die PDF-Dateien zusammen
-                pdfFileEditor.Concatenate(filesArray, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), name + ".pdf"));
-            }
+            MergePdf();
             //-----------------------------------------------------
 
             //List<string> pdfDateien = pdfPictureBoxes; // Rufe deine externe Liste hier auf
