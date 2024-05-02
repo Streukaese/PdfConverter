@@ -28,12 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonJpgAuswaehlen = new System.Windows.Forms.Button();
             this.openFileDialogPdfZsm = new System.Windows.Forms.OpenFileDialog();
             this.dataGridViewImages = new System.Windows.Forms.DataGridView();
+            this.ColumnDateipfad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnPdfNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSeitenNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSpeicher = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBoxJpgBilder = new System.Windows.Forms.GroupBox();
             this.buttonPdfJpgEntfernen = new System.Windows.Forms.Button();
             this.buttonPdfZusammenfuegen = new System.Windows.Forms.Button();
@@ -45,11 +50,6 @@
             this.textBoxMergedName = new System.Windows.Forms.TextBox();
             this.labelMergedName = new System.Windows.Forms.Label();
             this.buttonPdfAuswaehlen = new System.Windows.Forms.Button();
-            this.ColumnDateipfad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnPdfNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSeitenNr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSpeicher = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewImages)).BeginInit();
             this.panelScroll.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -89,6 +89,56 @@
             this.dataGridViewImages.RowTemplate.Height = 24;
             this.dataGridViewImages.Size = new System.Drawing.Size(509, 242);
             this.dataGridViewImages.TabIndex = 2;
+            // 
+            // ColumnDateipfad
+            // 
+            this.ColumnDateipfad.HeaderText = "Dateipfad";
+            this.ColumnDateipfad.MinimumWidth = 6;
+            this.ColumnDateipfad.Name = "ColumnDateipfad";
+            this.ColumnDateipfad.ReadOnly = true;
+            this.ColumnDateipfad.Visible = false;
+            this.ColumnDateipfad.Width = 125;
+            // 
+            // ColumnPdfNr
+            // 
+            this.ColumnPdfNr.HeaderText = "Pdf Nr.";
+            this.ColumnPdfNr.MinimumWidth = 6;
+            this.ColumnPdfNr.Name = "ColumnPdfNr";
+            this.ColumnPdfNr.ReadOnly = true;
+            this.ColumnPdfNr.Width = 125;
+            // 
+            // ColumnSeitenNr
+            // 
+            dataGridViewCellStyle1.Format = "N0";
+            dataGridViewCellStyle1.NullValue = null;
+            this.ColumnSeitenNr.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ColumnSeitenNr.HeaderText = "Seiten Nr.";
+            this.ColumnSeitenNr.MinimumWidth = 6;
+            this.ColumnSeitenNr.Name = "ColumnSeitenNr";
+            this.ColumnSeitenNr.ReadOnly = true;
+            this.ColumnSeitenNr.Width = 75;
+            // 
+            // ColumnName
+            // 
+            dataGridViewCellStyle2.Format = "ABCD123";
+            dataGridViewCellStyle2.NullValue = null;
+            this.ColumnName.DefaultCellStyle = dataGridViewCellStyle2;
+            this.ColumnName.HeaderText = "Name";
+            this.ColumnName.MinimumWidth = 6;
+            this.ColumnName.Name = "ColumnName";
+            this.ColumnName.ReadOnly = true;
+            this.ColumnName.Width = 215;
+            // 
+            // ColumnSpeicher
+            // 
+            dataGridViewCellStyle3.Format = "N0";
+            dataGridViewCellStyle3.NullValue = null;
+            this.ColumnSpeicher.DefaultCellStyle = dataGridViewCellStyle3;
+            this.ColumnSpeicher.HeaderText = "Speicher";
+            this.ColumnSpeicher.MinimumWidth = 6;
+            this.ColumnSpeicher.Name = "ColumnSpeicher";
+            this.ColumnSpeicher.ReadOnly = true;
+            this.ColumnSpeicher.Width = 125;
             // 
             // groupBoxJpgBilder
             // 
@@ -196,56 +246,6 @@
             this.buttonPdfAuswaehlen.Text = "PDF Auswählen";
             this.buttonPdfAuswaehlen.UseVisualStyleBackColor = true;
             this.buttonPdfAuswaehlen.Click += new System.EventHandler(this.buttonPdfAuswaehlen_Click);
-            // 
-            // ColumnDateipfad
-            // 
-            this.ColumnDateipfad.HeaderText = "Dateipfad";
-            this.ColumnDateipfad.MinimumWidth = 6;
-            this.ColumnDateipfad.Name = "ColumnDateipfad";
-            this.ColumnDateipfad.ReadOnly = true;
-            this.ColumnDateipfad.Visible = false;
-            this.ColumnDateipfad.Width = 125;
-            // 
-            // ColumnPdfNr
-            // 
-            this.ColumnPdfNr.HeaderText = "Pdf Nr.";
-            this.ColumnPdfNr.MinimumWidth = 6;
-            this.ColumnPdfNr.Name = "ColumnPdfNr";
-            this.ColumnPdfNr.ReadOnly = true;
-            this.ColumnPdfNr.Width = 125;
-            // 
-            // ColumnSeitenNr
-            // 
-            dataGridViewCellStyle13.Format = "N0";
-            dataGridViewCellStyle13.NullValue = null;
-            this.ColumnSeitenNr.DefaultCellStyle = dataGridViewCellStyle13;
-            this.ColumnSeitenNr.HeaderText = "Seiten Nr.";
-            this.ColumnSeitenNr.MinimumWidth = 6;
-            this.ColumnSeitenNr.Name = "ColumnSeitenNr";
-            this.ColumnSeitenNr.ReadOnly = true;
-            this.ColumnSeitenNr.Width = 75;
-            // 
-            // ColumnName
-            // 
-            dataGridViewCellStyle14.Format = "ABCD123";
-            dataGridViewCellStyle14.NullValue = null;
-            this.ColumnName.DefaultCellStyle = dataGridViewCellStyle14;
-            this.ColumnName.HeaderText = "Name";
-            this.ColumnName.MinimumWidth = 6;
-            this.ColumnName.Name = "ColumnName";
-            this.ColumnName.ReadOnly = true;
-            this.ColumnName.Width = 215;
-            // 
-            // ColumnSpeicher
-            // 
-            dataGridViewCellStyle15.Format = "N0";
-            dataGridViewCellStyle15.NullValue = null;
-            this.ColumnSpeicher.DefaultCellStyle = dataGridViewCellStyle15;
-            this.ColumnSpeicher.HeaderText = "Speicher";
-            this.ColumnSpeicher.MinimumWidth = 6;
-            this.ColumnSpeicher.Name = "ColumnSpeicher";
-            this.ColumnSpeicher.ReadOnly = true;
-            this.ColumnSpeicher.Width = 125;
             // 
             // Hauptfenster
             // 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -25,9 +26,9 @@ namespace PdfConverter
 
         List<PictureBox> pictureBoxes = new List<PictureBox>();
         List<PdfPictureBox> pdfPictureBoxes = new List<PdfPictureBox>();
-        private List<string> GetPdfDateienFromDataGridView()
+        private List<string> GetDateienFromDataGridView()
         {
-            List<string> pdfDateien = new List<string>();
+            List<string> dateiPfade = new List<string>();
 
             // Annahme: Der Name der Spalte mit den Dateipfaden ist "ColumnDateipfad"
             foreach (DataGridViewRow row in dataGridViewImages.Rows)
@@ -35,11 +36,11 @@ namespace PdfConverter
                 if (row.Cells["ColumnDateipfad"].Value != null)
                 {
                     string dateipfad = row.Cells["ColumnDateipfad"].Value.ToString();
-                    pdfDateien.Add(dateipfad);
+                    dateiPfade.Add(dateipfad);
                 }
             }
 
-            return pdfDateien;
+            return dateiPfade;
         }
         readonly Dictionary<int, BilddateiInfo> dateien = new Dictionary<int, BilddateiInfo>();
 
@@ -61,32 +62,89 @@ namespace PdfConverter
 
         void MergeJpg()
         {
+            // ToDo - Jpg werden Ineinander zusammengefügt - Bilder sollen Untereinander eingefügt werden (Randlos/Rand?|| Wahl zwischen beiden`?)
 
+            string name = textBoxMergedName.Text.Trim();
+            string vordefinierterText = "Keine Sonderzeichen!";
+            if (name.Length <= 0 || name == vordefinierterText)
+            {
+                MessageBox.Show("Bitte geben Sie einen gültigen Dateinamen ein.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxMergedName.Focus();
+                return;
+            }
+
+            List<string> jpgFiles = GetDateienFromDataGridView();
+
+            if(jpgFiles.Count > 0)
+            {
+                Bitmap mergedImage = null;
+                foreach(string jpgFile in jpgFiles)
+                {
+                    using(Bitmap image = new Bitmap(jpgFile))
+                    {
+                        if(mergedImage == null)
+                        {
+                            mergedImage = new Bitmap(image);
+                        }
+                        else
+                        {
+                            using(Graphics g = Graphics.FromImage(mergedImage))
+                            {
+                                g.DrawImage(image, Point.Empty);
+                            }
+                        }
+                    }
+                }
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string outputPath = Path.Combine(desktopPath, $"{name}.jpg");
+
+                mergedImage.Save(outputPath, ImageFormat.Jpeg);
+
+                MessageBox.Show("Die JPG-Dateien wurden erfolgreich zusammengeführt.", "Erfolg", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Es wurden keine JPG-Dateien ausgewählt.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         void MergePdf()
         {
             string name = textBoxMergedName.Text;
-            if (name.Length == 0)
+            string vordefinierterText = "Keine Sonderzeichen!";
+            if (name.Length <= 0 || name == vordefinierterText)
             {
+                MessageBox.Show("Bitte geben Sie einen gültigen Dateinamen ein.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxMergedName.Focus();
                 return;
             }
 
             PdfFileEditor pdfFileEditor = new PdfFileEditor();
 
-            // Hole die Liste der Dateipfade aus der DataGridView
-            List<string> pdfDateien = GetPdfDateienFromDataGridView();
+            // Holt Liste der Dateipfade aus der DGV
+            List<string> pdfDateien = GetDateienFromDataGridView();
+
+            // Zum einbinden vorhandener Lizensen
+            //Aspose.Pdf.License licensePDF = new Aspose.Pdf.License();
+            //licensePDF.SetLicense("Aspose.PDF.lic");
+
+            // Entfernt duplikate aus der Liste der Dateipfade(mehrseitige PDF´s == 1 < DGV)
+            pdfDateien = pdfDateien.Distinct().ToList();
 
             if (pdfDateien.Count > 0)
             {
-                // Konvertiere die Liste der Dateipfade in ein Array
-                string[] filesArray = pdfDateien.ToArray();
+                // Konvertiert Liste der Dateipfade in ein Array
+                string[] filesArray = pdfDateien.ToArray(); 
 
-                // Führe die PDF-Dateien zusammen
+                // Merge PDF-Dateien 
                 pdfFileEditor.Concatenate(filesArray, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), name + ".pdf"));
+                MessageBox.Show("Die PDF-Dateien wurden erfolgreich zusammengeführt.", "Erfolg", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
+            else
+            {
+                MessageBox.Show("Es wurden keine PDF-Dateien ausgewählt.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+}
 
         void OpenJpg()
         {
@@ -124,7 +182,7 @@ namespace PdfConverter
                 groupBoxJpgBilder.Size = new System.Drawing.Size(6 + pictureBoxes.Count * (182 + 6), 242);
 
                 // Parameter in die DGV einfügen
-                string dateipfad = openFileDialogPdfZsm.FileName;
+                string dateipfad = filename; //openFileDialogPdfZsm.FileName;
                 string PdfNr = "Nr." + 1;
                 string seitenNr = "Seite " + seitenAnzahlDgv;
                 string name = fileInfo.Name;
@@ -144,7 +202,7 @@ namespace PdfConverter
             // TODO - AUFRÄUMEN!!!
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Adobe Portable Document Format (*.pdf)|*.pdf|"
-                + "Joint Photographic Experts Group(*.jpg)| *.jpg";
+                        +"Joint Photographic Experts Group(*.jpg)| *.jpg";
             //Adobe Portable Document Format (*.pdf)|*.pdf|Alle Dateien (*.*)|*.*
             ofd.Multiselect = true;
             ofd.CheckFileExists = true;
@@ -232,149 +290,23 @@ namespace PdfConverter
             // TODO - Aktualisierung der DGV sowie JPG u. PDF bewärkstelligen
             dataGridViewImages.Rows.RemoveAt(index);
             groupBoxJpgBilder.Refresh();
+            groupBoxPdfBilder.Refresh();
             //pictureBoxes.Remove(index);
         }
 
         private void buttonPdfZusammenfuegen_Click(object sender, EventArgs e)
         {
-            // TODO - Aufräumen
-
-            MergePdf();
-            //-----------------------------------------------------
-
-            //List<string> pdfDateien = pdfPictureBoxes; // Rufe deine externe Liste hier auf
-
-            //// Verwende die Liste, um Seiten zu zählen und in das Array einzufügen
-            //int gesamtSeitenNummer = 1;
-            //string[] filesArray = new string[pdfDateien.Count];
-
-            //foreach (string dateipfad in pdfDateien)
-            //{
-            //    PdfDocument pdfDocument = PdfDocument.Load(dateipfad);
-
-            //    for (int seitenNummer = 1; seitenNummer <= pdfDocument.PageCount; seitenNummer++)
-            //    {
-            //        // Erstelle einen eindeutigen Namen für die Seite
-            //        string seitenName = "Seite " + gesamtSeitenNummer;
-
-            //        // Füge die Seite zur DataGridView hinzu
-            //        dataGridViewImages.Rows.Add(seitenName, dateipfad);
-
-            //        // Füge den Dateipfad zur Liste hinzu
-            //        filesArray[gesamtSeitenNummer - 1] = dateipfad;
-
-            //        // Erhöhe die Gesamtseitennummer für jede Seite
-            //        gesamtSeitenNummer++;
-            //    }
-            //}
-
-            //// Verwende das Array zum Zusammenführen der PDFs
-            //PdfFileEditor pdfFileEditor = new PdfFileEditor();
-            //pdfFileEditor.Concatenate(filesArray, "Desktop\\Merged.pdf");
-
-
-            //-----------------------------------------------------
-
-            //PdfFileEditor pdfFileEditor = new PdfFileEditor();
-            //int seitenNummer = 1;
-
-            //for (int index = 0; index < dataGridViewImages.Rows.Count; index++)
-            //{
-            //    string dateipfad = dataGridViewImages.Rows[index].Cells["ColumnDateipfad"].Value.ToString();
-
-            //    // Überprüfe, ob die Datei existiert
-            //    if (File.Exists(dateipfad))
-            //    {
-            //        PdfDocument pdfDocument = PdfDocument.Load(dateipfad);
-
-            //        for (int seiteIndex = 0; seiteIndex < pdfDocument.PageCount; seiteIndex++)
-            //        {
-            //            string seitenName = "Seite " + seitenNummer;
-
-            //            // Füge die Seite zur DataGridView hinzu
-            //            dataGridViewImages.Rows.Add(seitenName, dateipfad);
-
-            //            // Erhöhe die Seitennummer nur für ungerade Seiten (erste Seite in einem PDF mit zwei Seiten)
-            //            if (seiteIndex % 2 == 1)
-            //            {
-            //                seitenNummer++;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// Erstelle ein leeres PdfDocument für die zusammengeführten Seiten
-            //int seite = 0;
-
-            //PdfDocument mergedDocument = new PdfDocument();
-
-            //// Füge die Seiten in der Reihenfolge der DataGridView hinzu
-            //foreach (DataGridViewRow row in dataGridViewImages.Rows)
-            //{
-            //    string dateipfad = row.Cells["ColumnDateipfad"].Value.ToString();
-            //    PdfDocument document = PdfDocument.Load(dateipfad);
-
-            //    foreach (var page in document.Pages)
-            //    {
-            //        // Füge die Seite zum zusammengeführten Dokument hinzu
-            //        mergedDocument.AddPage(page);
-            //    }
-            //}
-
-            //// Speichere das zusammengeführte Dokument
-            //mergedDocument.Save("Desktop\\Merged.pdf");
-
-
-            //---------------------------------------------
-
-            //for (int index = 0; index < 3; index++)
-            //{
-
-            //    PdfFileEditor pdfFileEditor = new PdfFileEditor();
-
-            //    string[] filesArray = new string[3];
-            //    //filesArray[0] = dataGridViewImages.Columns.IndexOf("ColumnName");
-            //    filesArray[0] = dataGridViewImages.Rows[index].Cells["ColumnDateipfad"].Value.ToString();
-            //    filesArray[1] = dataGridViewImages.Rows[index].Cells["ColumnDateipfad"].Value.ToString();
-            //    filesArray[2] = dataGridViewImages.Rows[index].Cells["ColumnDateipfad"].Value.ToString();
-
-            //    pdfFileEditor.Concatenate(filesArray, "Desktop");
-            //}
-
-            //---------------------------------------------
-
-            //// Konvertiere die Liste von PdfPictureBox-Objekten in ein Array
-            //PdfPictureBox[] pdfPictureBoxArray = pdfPictureBoxes.ToArray();
-
-            //// Erstelle ein leeres PdfDocument
-            //PdfPictureBox mergedDocument = new PdfPictureBox();
-
-            //foreach(var pdfPictureBox in pdfPictureBoxArray)
-            //{
-            //    string filePath = OpenPdf();
-
-            //    PdfDocument document = PdfDocument.Load(filePath);
-
-            //    foreach(var page in document.Pages)
-            //    {
-            //        mergedDocument.AddPage(page);
-            //    }
-            //}
-
-            //-------------------------------------------
-
-            //string[] filesArray = new string[pdfPictureBoxArray.Length];
-
-            //for (int i = 0; i < pdfPictureBoxArray.Length; i++)
-            //{
-            //    // Speichere den Dateinamen des aktuellen PdfPictureBox-Objekts im String-Array
-            //    filesArray[i] = pdfPictureBoxArray[i].Tag.ToString(); // Ändere dies entsprechend der tatsächlichen Eigenschaft des Dateinamens
-            //}
-            //// Dateien zusammenführen
-            //pdfPictureBoxArray.Concatenate(filesArray, "merged.pdf");
+            if(pdfPictureBoxes.Count >= 1)
+            {
+                MergePdf();
+            }
+            else
+            {
+                MergeJpg();
+            }
         }
 
-    private void buttonPdfFunktionen_Click(object sender, EventArgs e)
+        private void buttonPdfFunktionen_Click(object sender, EventArgs e)
         {
             
         }
@@ -382,7 +314,6 @@ namespace PdfConverter
         private void openFileDialogPdfZsm_FileOk(object sender, CancelEventArgs e)
         {
             // TODO - Gesamt Pdf generieren und Speichern
-            // Funktion unnötig?? Mouton fragen
         }
 
         private void textBoxMergedName_Click(object sender, EventArgs e)
