@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonJpgAuswaehlen = new System.Windows.Forms.Button();
             this.openFileDialogPdfZsm = new System.Windows.Forms.OpenFileDialog();
             this.dataGridViewImages = new System.Windows.Forms.DataGridView();
@@ -43,13 +43,15 @@
             this.buttonPdfJpgEntfernen = new System.Windows.Forms.Button();
             this.buttonPdfZusammenfuegen = new System.Windows.Forms.Button();
             this.buttonPdfFunktionen = new System.Windows.Forms.Button();
-            this.checkedListBoxPdfFunktionen = new System.Windows.Forms.CheckedListBox();
             this.panelScroll = new System.Windows.Forms.Panel();
             this.groupBoxPdfBilder = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBoxMergedName = new System.Windows.Forms.TextBox();
             this.labelMergedName = new System.Windows.Forms.Label();
             this.buttonPdfAuswaehlen = new System.Windows.Forms.Button();
+            this.radioButtonKomprimieren = new System.Windows.Forms.RadioButton();
+            this.radioButtonPdfTrennen = new System.Windows.Forms.RadioButton();
+            this.radioButtonJpgZuPdf = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewImages)).BeginInit();
             this.panelScroll.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -57,7 +59,7 @@
             // 
             // buttonJpgAuswaehlen
             // 
-            this.buttonJpgAuswaehlen.Location = new System.Drawing.Point(287, 260);
+            this.buttonJpgAuswaehlen.Location = new System.Drawing.Point(267, 260);
             this.buttonJpgAuswaehlen.Name = "buttonJpgAuswaehlen";
             this.buttonJpgAuswaehlen.Size = new System.Drawing.Size(114, 50);
             this.buttonJpgAuswaehlen.TabIndex = 0;
@@ -109,9 +111,9 @@
             // 
             // ColumnSeitenNr
             // 
-            dataGridViewCellStyle1.Format = "N0";
-            dataGridViewCellStyle1.NullValue = null;
-            this.ColumnSeitenNr.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Format = "N0";
+            dataGridViewCellStyle4.NullValue = null;
+            this.ColumnSeitenNr.DefaultCellStyle = dataGridViewCellStyle4;
             this.ColumnSeitenNr.HeaderText = "Seiten Nr.";
             this.ColumnSeitenNr.MinimumWidth = 6;
             this.ColumnSeitenNr.Name = "ColumnSeitenNr";
@@ -120,9 +122,9 @@
             // 
             // ColumnName
             // 
-            dataGridViewCellStyle2.Format = "ABCD123";
-            dataGridViewCellStyle2.NullValue = null;
-            this.ColumnName.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Format = "ABCD123";
+            dataGridViewCellStyle5.NullValue = null;
+            this.ColumnName.DefaultCellStyle = dataGridViewCellStyle5;
             this.ColumnName.HeaderText = "Name";
             this.ColumnName.MinimumWidth = 6;
             this.ColumnName.Name = "ColumnName";
@@ -131,9 +133,9 @@
             // 
             // ColumnSpeicher
             // 
-            dataGridViewCellStyle3.Format = "N0";
-            dataGridViewCellStyle3.NullValue = null;
-            this.ColumnSpeicher.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Format = "N0";
+            dataGridViewCellStyle6.NullValue = null;
+            this.ColumnSpeicher.DefaultCellStyle = dataGridViewCellStyle6;
             this.ColumnSpeicher.HeaderText = "Speicher";
             this.ColumnSpeicher.MinimumWidth = 6;
             this.ColumnSpeicher.Name = "ColumnSpeicher";
@@ -171,25 +173,13 @@
             // 
             // buttonPdfFunktionen
             // 
-            this.buttonPdfFunktionen.Location = new System.Drawing.Point(389, 439);
+            this.buttonPdfFunktionen.Location = new System.Drawing.Point(407, 438);
             this.buttonPdfFunktionen.Name = "buttonPdfFunktionen";
             this.buttonPdfFunktionen.Size = new System.Drawing.Size(132, 54);
             this.buttonPdfFunktionen.TabIndex = 6;
-            this.buttonPdfFunktionen.Text = "PDF \"Funktionen\"";
+            this.buttonPdfFunktionen.Text = "Image \"Funktionen\"";
             this.buttonPdfFunktionen.UseVisualStyleBackColor = true;
             this.buttonPdfFunktionen.Click += new System.EventHandler(this.buttonPdfFunktionen_Click);
-            // 
-            // checkedListBoxPdfFunktionen
-            // 
-            this.checkedListBoxPdfFunktionen.FormattingEnabled = true;
-            this.checkedListBoxPdfFunktionen.Items.AddRange(new object[] {
-            "Komprimieren",
-            "Trennen",
-            "JPG zu Pdf"});
-            this.checkedListBoxPdfFunktionen.Location = new System.Drawing.Point(389, 498);
-            this.checkedListBoxPdfFunktionen.Name = "checkedListBoxPdfFunktionen";
-            this.checkedListBoxPdfFunktionen.Size = new System.Drawing.Size(132, 72);
-            this.checkedListBoxPdfFunktionen.TabIndex = 7;
             // 
             // panelScroll
             // 
@@ -239,7 +229,7 @@
             // 
             // buttonPdfAuswaehlen
             // 
-            this.buttonPdfAuswaehlen.Location = new System.Drawing.Point(287, 316);
+            this.buttonPdfAuswaehlen.Location = new System.Drawing.Point(267, 316);
             this.buttonPdfAuswaehlen.Name = "buttonPdfAuswaehlen";
             this.buttonPdfAuswaehlen.Size = new System.Drawing.Size(114, 50);
             this.buttonPdfAuswaehlen.TabIndex = 14;
@@ -247,18 +237,53 @@
             this.buttonPdfAuswaehlen.UseVisualStyleBackColor = true;
             this.buttonPdfAuswaehlen.Click += new System.EventHandler(this.buttonPdfAuswaehlen_Click);
             // 
+            // radioButtonKomprimieren
+            // 
+            this.radioButtonKomprimieren.AutoSize = true;
+            this.radioButtonKomprimieren.Location = new System.Drawing.Point(418, 498);
+            this.radioButtonKomprimieren.Name = "radioButtonKomprimieren";
+            this.radioButtonKomprimieren.Size = new System.Drawing.Size(111, 20);
+            this.radioButtonKomprimieren.TabIndex = 15;
+            this.radioButtonKomprimieren.TabStop = true;
+            this.radioButtonKomprimieren.Text = "Komprimieren";
+            this.radioButtonKomprimieren.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonPdfTrennen
+            // 
+            this.radioButtonPdfTrennen.AutoSize = true;
+            this.radioButtonPdfTrennen.Location = new System.Drawing.Point(418, 524);
+            this.radioButtonPdfTrennen.Name = "radioButtonPdfTrennen";
+            this.radioButtonPdfTrennen.Size = new System.Drawing.Size(108, 20);
+            this.radioButtonPdfTrennen.TabIndex = 16;
+            this.radioButtonPdfTrennen.TabStop = true;
+            this.radioButtonPdfTrennen.Text = "PDF Trennen";
+            this.radioButtonPdfTrennen.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonJpgZuPdf
+            // 
+            this.radioButtonJpgZuPdf.AutoSize = true;
+            this.radioButtonJpgZuPdf.Location = new System.Drawing.Point(418, 550);
+            this.radioButtonJpgZuPdf.Name = "radioButtonJpgZuPdf";
+            this.radioButtonJpgZuPdf.Size = new System.Drawing.Size(100, 20);
+            this.radioButtonJpgZuPdf.TabIndex = 17;
+            this.radioButtonJpgZuPdf.TabStop = true;
+            this.radioButtonJpgZuPdf.Text = "JPG zu PDF";
+            this.radioButtonJpgZuPdf.UseVisualStyleBackColor = true;
+            // 
             // Hauptfenster
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1170, 582);
+            this.Controls.Add(this.radioButtonJpgZuPdf);
+            this.Controls.Add(this.radioButtonPdfTrennen);
+            this.Controls.Add(this.radioButtonKomprimieren);
             this.Controls.Add(this.buttonPdfAuswaehlen);
             this.Controls.Add(this.labelMergedName);
             this.Controls.Add(this.textBoxMergedName);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelScroll);
-            this.Controls.Add(this.checkedListBoxPdfFunktionen);
             this.Controls.Add(this.buttonPdfFunktionen);
             this.Controls.Add(this.buttonPdfZusammenfuegen);
             this.Controls.Add(this.buttonPdfJpgEntfernen);
@@ -284,7 +309,6 @@
         private System.Windows.Forms.Button buttonPdfJpgEntfernen;
         private System.Windows.Forms.Button buttonPdfZusammenfuegen;
         private System.Windows.Forms.Button buttonPdfFunktionen;
-        private System.Windows.Forms.CheckedListBox checkedListBoxPdfFunktionen;
         private System.Windows.Forms.Panel panelScroll;
         private System.Windows.Forms.GroupBox groupBoxPdfBilder;
         private System.Windows.Forms.Panel panel1;
@@ -296,6 +320,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSeitenNr;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSpeicher;
+        private System.Windows.Forms.RadioButton radioButtonKomprimieren;
+        private System.Windows.Forms.RadioButton radioButtonPdfTrennen;
+        private System.Windows.Forms.RadioButton radioButtonJpgZuPdf;
     }
 }
 

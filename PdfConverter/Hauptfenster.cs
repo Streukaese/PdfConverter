@@ -1,4 +1,5 @@
-﻿using Aspose.Pdf.Facades;
+﻿using Aspose.Pdf;
+using Aspose.Pdf.Facades;
 using PdfiumViewer;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -260,6 +262,152 @@ namespace PdfConverter
             }
         }
 
+        void JpgZuPdf()
+        {
+            string name = textBoxMergedName.Text;
+            string vordefinierterText = "Keine Sonderzeichen!";
+            if (name.Length <= 0 || name == vordefinierterText)
+            {
+                MessageBox.Show("Bitte geben Sie einen gültigen Dateinamen ein.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxMergedName.Focus();
+                return;
+            }
+
+            // Erzeuge ein neues Document-Objekt
+            Document pdfDocument = new Document();
+
+            // Hole die Liste der Dateipfade aus der DataGridView
+            List<string> jpgFiles = GetDateienFromDataGridView();
+
+            if (jpgFiles.Count > 0)
+            {
+                // Durchlaufe die Liste der JPG-Dateien und füge sie dem PDF-Dokument hinzu
+                foreach (string jpgFile in jpgFiles)
+                {
+                    // Lade das JPG-Bild und füge es als Seite zum PDF-Dokument hinzu
+                    using (FileStream stream = new FileStream(jpgFile, FileMode.Open))
+                    {
+                        pdfDocument.Pages.Add(stream);
+                    }
+                }
+
+                // Speichere das PDF-Dokument
+                pdfDocument.Save(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), name + ".pdf"));
+
+                MessageBox.Show("Die JPG-Dateien wurden erfolgreich zu einer PDF-Datei zusammengeführt.", "Erfolg", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Es wurden keine JPG-Dateien ausgewählt.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            //---------------------------------------------------------------
+
+            //string name = textBoxMergedName.Text;
+            //string vordefinierterText = "Keine Sonderzeichen!";
+            //if (name.Length <= 0 || name == vordefinierterText)
+            //{
+            //    MessageBox.Show("Bitte geben Sie einen gültigen Dateinamen ein.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    textBoxMergedName.Focus();
+            //    return;
+            //}
+
+            //// Erzeuge ein neues PdfFileEditor-Objekt
+            //PdfFileEditor pdfFileEditor = new PdfFileEditor();
+
+            //// Hole die Liste der Dateipfade aus der DataGridView
+            //List<string> pdfFiles = GetDateienFromDataGridView();
+
+            //if(pdfFiles.Count > 0 )
+            //{
+            //    // Array für Dateipfade der PDF-Dateien
+            //    string[] filesArray = pdfFiles.ToArray();
+
+            //    // Führe die PDF-Dateien zusammen
+            //    pdfFileEditor.Concatenate(filesArray, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), name + ".pdf"));
+
+            //    MessageBox.Show("Die JPG-Dateien wurden erfolgreich zusammengeführt.", "Erfolg", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Es wurden keine JPG-Dateien ausgewählt.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //}
+
+            
+            //---------------------------------------------------------------
+
+            //List<string> imagePaths = GetDateienFromDataGridView();
+
+            //// Erstelle ein neues PDF-Dokument
+            //Document pdfDoc = new Document();
+
+            //// Durchlaufe alle Bilder in der Liste
+            //foreach (string imagePath in imagePaths)
+            //{
+            //    // Lade das Bild in ein Stream
+            //    using (FileStream imageStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
+            //    {
+            //        var image = System.Drawing.Image.FromStream(imageStream);
+            //        var page = pdfDoc.Pages.Add();
+            //        page.Resources.Images.Add(image);
+            //    }
+            //}
+
+            //--------------------------------------------------------
+
+            //string name = textBoxMergedName.Text;
+            //if (name.Length <= 0)
+            //{
+            //    textBoxMergedName.Focus();
+            //    return;
+            //}
+
+            //// Lade die JPG-Datei in eine Bitmap
+            //Bitmap bitmap = new Bitmap("deine_jpg_datei.jpg");
+
+            //// Erzeuge ein neues PDF-Dokument
+            //PdfDocument document = new PdfDocument();
+
+            //// Iteriere über jede Seite in der JPG-Datei
+            //for (int i = 0; i < bitmap.GetFrameCount(FrameDimension.Page); i++)
+            //{
+            //    // Erzeuge eine neue Seite im PDF-Dokument
+            //    PdfPage page = document.AddPage();
+
+            //    // Erzeuge ein XGraphics-Objekt für die Seite
+            //    XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            //    // Lade das aktuelle Bild aus der JPG-Datei
+            //    bitmap.SelectActiveFrame(FrameDimension.Page, i);
+
+            //    // Konvertiere das Bitmap-Bild in ein XImage
+            //    XImage image = XImage.FromGdiPlusImage(bitmap);
+
+            //    // Bestimme die Größe des Bildes und skaliere es, um auf die Seite zu passen
+            //    XSize scaledSize = new XSize(page.Width, page.Width * (image.PointHeight / (double)image.PointWidth));
+
+            //    // Berechne die Position, um das Bild zentriert auf die Seite zu platzieren
+            //    double x = (page.Width - scaledSize.Width) / 2;
+            //    double y = (page.Height - scaledSize.Height) / 2;
+
+            //    // Zeichne das Bild auf die Seite
+            //    gfx.DrawImage(image, x, y, scaledSize.Width, scaledSize.Height);
+            //}
+
+            //// Speichere das PDF-Dokument
+            //document.Save(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), name + ".pdf"));
+        }
+
+        void DateiKomprimieren()
+        {
+
+        }
+
+        void PdfTrennen()
+        {
+
+        }
+
         private void buttonJpgAuswaehlen_Click(object sender, EventArgs e)
         {
             OpenJpg();
@@ -305,10 +453,68 @@ namespace PdfConverter
                 MergeJpg();
             }
         }
-
+        public void FunktionenAuswahl()
+        {
+            if (radioButtonJpgZuPdf.Checked || radioButtonKomprimieren.Checked || radioButtonPdfTrennen.Checked)
+            {
+                if (radioButtonJpgZuPdf.Checked == true)
+                {
+                    JpgZuPdf();
+                    MessageBox.Show("Die JPG-Dateien wurden erfolgreich umgewandelt.", "Erfolg", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (radioButtonKomprimieren.Checked == true)
+                {
+                    DateiKomprimieren();
+                }
+                else if (radioButtonPdfTrennen.Checked == true)
+                {
+                    PdfTrennen();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bitte wählen Sie eine Kategorie aus!", "Hinweis", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
         private void buttonPdfFunktionen_Click(object sender, EventArgs e)
         {
-            
+
+            //bool jpgZuPdf = checkedListBoxPdfFunktionen.CheckedItems.Contains("JPG zu PDF");
+            //bool komprimieren = checkedListBoxPdfFunktionen.CheckedItems.Contains("Komprimieren");
+            //bool pdfTrennen = checkedListBoxPdfFunktionen.CheckedItems.Contains("Pdf trennen");
+            //if (radioButtonJpgZuPdf.Checked || radioButtonKomprimieren.Checked || radioButtonPdfTrennen.Checked)
+            //{
+            //    if (radioButtonJpgZuPdf.Checked == true)
+            //    {
+            //        JpgZuPdf();
+            //        MessageBox.Show("Die JPG-Dateien wurden erfolgreich umgewandelt.", "Erfolg", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    }
+            //    else if (radioButtonKomprimieren.Checked == true)
+            //    {
+            //        DateiKomprimieren();
+            //    }
+            //    else if (radioButtonPdfTrennen.Checked == true)
+            //    {
+            //        PdfTrennen();
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Bitte wählen Sie eine Kategorie aus!", "Hinweis", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //}
+
+            string name = textBoxMergedName.Text.Trim();
+            string vordefinierterText = "Keine Sonderzeichen!";
+            if (name.Length <= 0 || name == vordefinierterText)
+            {
+                MessageBox.Show("Bitte geben Sie einen gültigen Dateinamen ein.", "Warnung", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxMergedName.Focus();
+                return;
+            }
+            else
+            {
+                FunktionenAuswahl();
+            }
         }
 
         private void openFileDialogPdfZsm_FileOk(object sender, CancelEventArgs e)
